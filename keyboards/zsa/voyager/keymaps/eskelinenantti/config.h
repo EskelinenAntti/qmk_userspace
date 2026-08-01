@@ -1,4 +1,5 @@
 #define CHORDAL_HOLD
+#define PERMISSIVE_HOLD_PER_KEY
 #define FLOW_TAP_TERM 100
 #define QUICK_TAP_TERM 0
 

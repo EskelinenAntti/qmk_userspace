@@ -120,13 +120,12 @@ bool is_flow_tap_key(uint16_t keycode) {
     return false;
 }
 
-bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t *tap_hold_record, uint16_t other_keycode, keyrecord_t *other_record) {
-    if (IS_QK_MOD_TAP(tap_hold_keycode)) {
-        switch (QK_MOD_TAP_GET_MODS(tap_hold_keycode)) {
-            case MOD_LSFT:
-            case MOD_RSFT:
-                return get_chordal_hold_default(tap_hold_record, other_record);
-        }
+bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case MT(MOD_LSFT, KC_J):
+        case MT(MOD_RSFT, KC_K):
+            return true;
     }
+
     return false;
 }
