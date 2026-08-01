@@ -9,7 +9,7 @@ QMK keymaps for my keyboards.
 
 ## Flashing
 
-1. `qmk flash -kb your_keyboard -km your_keymap`
+1. `qmk flash -kb zsa/voyager -km eskelinenantti`
 
 Alternatively, if you configured your build targets above, you can use `qmk userspace-compile` to build all of your userspace targets at once.
 
