@@ -1,11 +1,20 @@
 #include QMK_KEYBOARD_H
 
+#define HRM_A MT(MOD_LCTL, KC_A)
+#define HRM_S MT(MOD_LALT, KC_S)
+#define HRM_D MT(MOD_LGUI, KC_D)
+#define HRM_F MT(MOD_LSFT, KC_F)
+#define HRM_J MT(MOD_RSFT, KC_J)
+#define HRM_K MT(MOD_RGUI, KC_K)
+#define HRM_L MT(MOD_RALT, KC_L)
+#define HRM_SCLN MT(MOD_LCTL, KC_SCLN)
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_voyager(
     KC_MINUS,       KC_1,               KC_2,               KC_3,               KC_4,               KC_5,           KC_6,       KC_7,               KC_8,               KC_9,               KC_0,                   KC_EQUAL,
     KC_LBRC,        KC_Q,               KC_W,               KC_E,               KC_R,               KC_T,           KC_Y,       KC_U,               KC_I,               KC_O,               KC_P,                   KC_RBRC,
-    KC_ESCAPE,      MT(MOD_LCTL, KC_A), MT(MOD_LALT, KC_S), MT(MOD_LGUI, KC_D), MT(MOD_LSFT, KC_F), KC_G,           KC_H,       MT(MOD_RSFT, KC_J), MT(MOD_RGUI, KC_K), MT(MOD_RALT, KC_L), MT(MOD_LCTL, KC_SCLN),  KC_QUOTE,
+    KC_ESCAPE,      HRM_A,              HRM_S,              HRM_D,              HRM_F,              KC_G,           KC_H,       HRM_J,              HRM_K,              HRM_L,              HRM_SCLN,               KC_QUOTE,
     KC_GRAVE,       KC_Z,               KC_X,               KC_C,               KC_V,               KC_B,           KC_N,       KC_M,               KC_COMMA,           KC_DOT,             KC_SLASH,               KC_BSLS,
                                                                                 MO(1),              KC_TAB,         KC_BSPC,    KC_SPACE
   ),
@@ -87,10 +96,9 @@ bool rgb_matrix_indicators_user(void) {
 bool is_flow_tap_key(uint16_t keycode) {
     // Disable Flow Tap on Shift mod-tap keys.
     if (IS_QK_MOD_TAP(keycode)) {
-        switch (QK_MOD_TAP_GET_MODS(keycode)) {
-            case MOD_LSFT:
-            case MOD_RSFT:
-                return false;
+        uint8_t mods = mod_config(QK_MOD_TAP_GET_MODS(keycode));
+        if (mods & MOD_MASK_SHIFT) {
+            return false;
         }
     }
 
