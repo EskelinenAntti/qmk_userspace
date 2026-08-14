@@ -1,13 +1,4 @@
 #include QMK_KEYBOARD_H
-#include "version.h"
-#define MOON_LED_LEVEL LED_LEVEL
-#ifndef ZSA_SAFE_RANGE
-#    define ZSA_SAFE_RANGE SAFE_RANGE
-#endif
-
-enum custom_keycodes {
-    RGB_SLD = ZSA_SAFE_RANGE,
-};
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -93,30 +84,12 @@ bool rgb_matrix_indicators_user(void) {
     return true;
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case RGB_SLD:
-            if (record->event.pressed) {
-                rgblight_mode(1);
-            }
-            return false;
-    }
-    return true;
-}
-
 bool is_flow_tap_key(uint16_t keycode) {
     // Disable Flow Tap on Shift mod-tap keys.
     if (IS_QK_MOD_TAP(keycode)) {
         switch (QK_MOD_TAP_GET_MODS(keycode)) {
             case MOD_LSFT:
             case MOD_RSFT:
-                return false;
-        }
-    }
-
-    if (IS_QK_LAYER_TAP(keycode)) {
-        switch (QK_LAYER_TAP_GET_TAP_KEYCODE(keycode)) {
-            case KC_SPACE:
                 return false;
         }
     }
@@ -140,7 +113,6 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case MT(MOD_LSFT, KC_F):
         case MT(MOD_RSFT, KC_J):
-        case LT(1, KC_SPACE):
             return true;
     }
 
