@@ -108,13 +108,3 @@ bool is_flow_tap_key(uint16_t keycode) {
     }
     return false;
 }
-
-bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case MT(MOD_LSFT, KC_F):
-        case MT(MOD_RSFT, KC_J):
-            return true;
-    }
-
-    return false;
-}
