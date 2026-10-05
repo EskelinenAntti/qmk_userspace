@@ -1,5 +1,8 @@
 #include QMK_KEYBOARD_H
 
+// Use QMK's tap/hold handling, with the hold action intercepted below.
+#define GLOB_TAB LT(0, KC_TAB)
+
 #define HRM_A MT(MOD_LCTL, KC_A)
 #define HRM_S MT(MOD_LALT, KC_S)
 #define HRM_D MT(MOD_LGUI, KC_D)
@@ -16,7 +19,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_LBRC,        KC_Q,               KC_W,               KC_E,               KC_R,               KC_T,           KC_Y,       KC_U,               KC_I,               KC_O,               KC_P,                   KC_RBRC,
     KC_ESCAPE,      HRM_A,              HRM_S,              HRM_D,              HRM_F,              KC_G,           KC_H,       HRM_J,              HRM_K,              HRM_L,              HRM_SCLN,               KC_QUOTE,
     KC_GRAVE,       KC_Z,               KC_X,               KC_C,               KC_V,               KC_B,           KC_N,       KC_M,               KC_COMMA,           KC_DOT,             KC_SLASH,               KC_BSLS,
-                                                                                MO(1),              KC_TAB,         KC_BSPC,    KC_SPACE
+                                                                                MO(1),              GLOB_TAB,       KC_BSPC,    KC_SPACE
   ),
   [1] = LAYOUT_voyager(
     KC_F12,         KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,              KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,
@@ -37,6 +40,20 @@ const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM =
                             '*', '*',  '*', '*'
     );
 // clang-format on
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case GLOB_TAB:
+            if (record->tap.count) {
+                return true; // Let QMK send Tab for taps.
+            }
+            // Replace the layer hold with Apple's Globe consumer usage.
+            host_consumer_send(record->event.pressed ? AC_NEXT_KEYBOARD_LAYOUT_SELECT : 0);
+            return false;
+        default:
+            return true;
+    }
+}
 
 extern rgb_config_t rgb_matrix_config;
 
